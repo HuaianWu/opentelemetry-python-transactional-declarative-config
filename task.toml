@@ -1,0 +1,50 @@
+schema_version = "1.3"
+artifacts = ["/logs/artifacts/model.patch"]
+[task]
+name = "benzhi/opentelemetry-python-transactional-declarative-config"
+description = ""
+authors = []
+keywords = []
+[metadata]
+ext_id = "kh503eb4b2010af67fa4496d59126ef2"
+task_id = "opentelemetry-python-transactional-declarative-config"
+display_title = "Make declarative SDK configuration all-or-nothing"
+display_description = "Construct and validate the whole OTEL_CONFIG_FILE configuration before any global state is set, releasing resources exactly once on failure so a corrected retry works."
+original_title = "为 OpenTelemetry Python 声明式配置增加事务化全有或全无语义"
+category = "feature_request"
+language = "python"
+repository_url = "https://github.com/open-telemetry/opentelemetry-python"
+base_commit_hash = "53a5a40c9604583c501bcf13970a635f00e62df4"
+[verifier]
+network_mode = "no-network"
+environment_mode = "separate"
+timeout_sec = 1800.0
+
+[verifier.env]
+[verifier.environment]
+build_timeout_sec = 1800.0
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480
+
+[[verifier.collect]]
+command = "cd /app && mkdir -p /logs/artifacts && git config --global --add safe.directory /app && git diff --binary 53a5a40c9604583c501bcf13970a635f00e62df4 HEAD > /logs/artifacts/model.patch"
+timeout_sec = 300.0
+
+[agent]
+network_mode = "no-network"
+timeout_sec = 10800.0
+[environment]
+build_timeout_sec = 1800.0
+# docker_image is omitted in step 1: Harbor/Pier builds environment/Dockerfile.
+# After the image is built and pushed, set e.g.
+# docker_image = "<registry>/benzhi-swe:kh503eb4b2010af67fa4496d59126ef2-v1"
+os = "linux"
+cpus = 2
+memory_mb = 8192
+storage_mb = 20480
+gpus = 0
+mcp_servers = []
+
+[environment.env]
+[solution.env]
